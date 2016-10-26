@@ -33,7 +33,7 @@ def sweepFig():
     ax.set_xlim([0, maxg])
     ax.set_ylim([0, 1])
     ax.set_xlabel('Generation', fontsize=20)
-    ax.set_ylabel('Frequency of   allele', fontsize=20)
+    ax.set_ylabel('Frequency of allele', fontsize=20)
     fig.savefig(mydir + 'figs/test.png', \
         bbox_inches = "tight", pad_inches = 0.4, dpi = 600)
     plt.close()
@@ -47,7 +47,7 @@ def sweepDormFig(N = 1000, M = 1000, s = 0.1):
     for j, c in enumerate(Cs):
         g = []
         p = []
-        df = pd.read_csv(mydir + 'data/sweep_N_' + str(N) + '_M_' + str(M) + '_c_' + \
+        df = pd.read_csv(mydir + 'data/sweeps_dorm/sweep_N_' + str(N) + '_M_' + str(M) + '_c_' + \
             str(c) + '_s_' + str(s) + '.txt', header = None)
 
         for index, row in df.iterrows():
@@ -65,18 +65,18 @@ def sweepDormFig(N = 1000, M = 1000, s = 0.1):
             p_plot_std.append( np.std(i))
         p_plot_mean = np.asarray(p_plot_mean)
         p_plot_std = np.asarray(p_plot_std)
-        ax.plot(np.log10(range(1, len(p_plot_mean )+1)),p_plot_mean, label='Gens in seed bank = ' + str(int(1 / (c/M))), lw = 2, color = colors[j])
+        ax.plot(np.log10(range(1, len(p_plot_mean )+1)),p_plot_mean, label='Time in seed bank = ' + str(int(1 / (c/M))), lw = 2, color = colors[j])
         ax.fill_between(np.log10(range(1, len(p_plot_mean )+1)), p_plot_mean+p_plot_std, p_plot_mean-p_plot_std, facecolor=colors[j], alpha=0.5)
 
         if max(g) > maxg:
             maxg = max(g)
     ax.set_xlim([0, np.log10(maxg)])
     ax.set_ylim([0, 1])
-    ax.legend(loc='upper left')
-    ax.set_xlabel('Generations, ' + r'$log_{10}$', fontsize=20)
+    ax.legend(loc='upper left', fontsize = 12)
+    ax.set_xlabel('Time (generations), ' + r'$log_{10}$', fontsize=20)
     ax.set_ylabel('Frequency of favored allele', fontsize=20)
     fig.savefig(mydir + 'figs/SweepDorm.png', \
         bbox_inches = "tight", pad_inches = 0.4, dpi = 600)
     plt.close()
 
-#sweepDormFig()
+sweepDormFig()
