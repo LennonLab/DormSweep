@@ -9,8 +9,8 @@ mydir = os.path.expanduser('~/github/DormSweep/')
 
 # Definition of parameters
 s = 0.1
-r = 0.5
-d = 0.8
+r = 0.7
+d = 0.3
 def dP_dt(P, t=0):
     ''' Return the change in frequency of the favored allele for active and dormant
     individuals. '''
@@ -37,14 +37,13 @@ def plotDynamics():
     P0 = np.array([0.01, 0])                     # initials conditions: 10 rabbits and 5 foxes
     P, infodict = integrate.odeint(dP_dt, P0, t, full_output=True)
     infodict['message']                     # >>> 'Integration successful.'
-
     active, dormant = P.T
     plt.plot(t, active, 'r-', label='Active')
     plt.plot(t, dormant  , 'b-', label='Dormant')
     plt.grid()
     plt.legend(loc='best')
-    plt.xlabel('Time [generations]')
-    plt.ylabel('Allele frequency')
+    plt.xlabel('Time [generations]', fontsize=20)
+    plt.ylabel('Allele frequency', fontsize=20)
     plt.title('Selective sweep of a favored allele')
     plt.savefig(mydir + 'figs/testDyn.png')
 

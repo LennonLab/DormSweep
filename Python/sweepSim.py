@@ -105,16 +105,16 @@ def sweepSimDorm(N, M, c, s, reps = 1000):
     N_df = pd.DataFrame(N_freqs_list)
     M_df = pd.DataFrame(M_freqs_list)
     N_df.to_csv(mydir + 'data/N_sweep_N_' + str(N) + '_M_' + str(M) + '_c_' + \
-        str(c) + '_s_' + str(s) + '.txt', header=False, index = False)
+        str(c) + '_s_' + str(s) + '_r_' + str(reps) + '.txt', header=False, index = False)
     M_df.to_csv(mydir + 'data/M_sweep_N_' + str(N) + '_M_' + str(M) + '_c_' + \
-        str(c) + '_s_' + str(s) + '.txt', header=False, index = False)
+        str(c) + '_s_' + str(s) + '_r_' + str(reps) + '.txt', header=False, index = False)
 
 def multipleS(N, reps = 100):
     Ss = [0.001, 0.01, 0.1]
     for s in Ss:
         sweepSim(N, s = s, reps = reps)
 
-def multipleSDorm(N, M, s = 0.1, reps = 1000):
+def multipleSDorm(N, M, s = 0.1, reps = 100):
     #Ss = [0.001, 0.01, 0.1]
     #Cs = [1, 10, 100]
     Cs = np.logspace(0, 4, num = 100, base=10.0)
