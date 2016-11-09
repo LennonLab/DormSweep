@@ -117,7 +117,8 @@ def multipleS(N, reps = 100):
 def multipleSDorm(N, M, s = 0.1, reps = 100):
     #Ss = [0.001, 0.01, 0.1]
     #Cs = [1, 10, 100]
-    Cs = np.logspace(0, 4, num = 100, base=10.0)
+    #Cs = np.logspace(0, 4, num = 100, base=10.0)
+    Cs = [10000]
     for c in Cs:
         print c
         sweepSimDorm(N = N, M = M, c = c,  s = s, reps = reps)
