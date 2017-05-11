@@ -28,7 +28,6 @@ def cleanData(N = 1000, M = 10000, s = 0.1, r = 100):
             times = df_j.apply(lambda x: x[x == 1.0].index[0], axis = 1)
 
             times.columns = str(c)
-            #df[str(c)] = np.asarray(times)
             df[str(c)] = times
 
 
