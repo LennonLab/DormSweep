@@ -93,6 +93,8 @@ def sweepSimDorm(N, M, c, s, reps = 1000):
             M_freqs.append((MB / M) )
             g += 1
             gs.append(g)
+            # if the advantagous allele is lost from the population,
+            # restart the simulation
             if (NB + MB) == 0:
                 break
         if (NB + MB)  != (N + M):
@@ -123,4 +125,4 @@ def multipleSDorm(N, M, s = 0.1, reps = 100):
         print c
         sweepSimDorm(N = N, M = M, c = c,  s = s, reps = reps)
 
-multipleSDorm(N = 1000, M = 10000)
+#multipleSDorm(N = 1000, M = 10000)

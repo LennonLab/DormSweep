@@ -1,4 +1,4 @@
-from __future__ import division
+ from __future__ import division
 import pandas as pd
 import  matplotlib.pyplot as plt
 import os, argparse, math, itertools
@@ -74,7 +74,7 @@ def sweepDormFig(N = 1000, M = 1000, s = 0.1):
 
         if max(g) > maxg:
             maxg = max(g)
-    ax.set_xlim([0, np.log10(maxg)])
+    ax.set_xlim([0, maxg])
     ax.set_ylim([0, 1])
     plt.grid()
     ax.legend(loc='upper left', fontsize = 12)
@@ -174,6 +174,8 @@ def TfixFigActDorm(M = 10000):
         bbox_inches = "tight", pad_inches = 0.4, dpi = 600)
     plt.close()
 
-TfixFigActDorm()
-sweepDormFig()
-TfixFig()
+#def Fig4():
+
+#TfixFigActDorm()
+#sweepDormFig()
+#TfixFig()
