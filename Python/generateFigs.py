@@ -1,4 +1,4 @@
- from __future__ import division
+from __future__ import division
 import pandas as pd
 import  matplotlib.pyplot as plt
 import os, argparse, math, itertools
@@ -174,8 +174,33 @@ def TfixFigActDorm(M = 10000):
         bbox_inches = "tight", pad_inches = 0.4, dpi = 600)
     plt.close()
 
+def pFix():
+    def PfixMoran(k, N, s):
+        num = 1 - ((1-s) ** k)
+        den = 1 - ((1-s) ** N)
+        return num / den
+
+    IN = pd.read_csv(mydir + 'data/pFix/N_sweep_N_1000_M_10000_s_0.1_r_10.txt', sep = ' ')
+    IN['avg_t_sb'] = 1/ (IN['c'] / IN['M'])
+    x = np.log10(IN['avg_t_sb'].values)
+    y = np.log10(IN['pFix'].values)
+    fig, ax = plt.subplots()
+    ax.scatter(x, y, lw=2, color='#87CEEB', alpha = 1)
+    ax.set_xlabel('Average time in seed bank, ' + r'$log_{10}$', fontsize=20)
+    ax.set_ylabel( r'$P_{fix}, \, log_{10}$', fontsize=20)
+    #ax.plot(x, y, lw=2, color='#87CEEB')
+    ax.set_xlim([0, 5])
+    y1 = PfixMoran(1, 1000, 0.1)
+    #y2 = PfixMoran(1, 1000 + 10000, 0.1)
+    plt.axhline(y = np.log10(y1), c = 'grey', linestyle = '--', lw = 3)
+    #plt.axhline(y = np.log10(y2), c = 'grey', linestyle = '--', lw = 3)
+    fig.savefig(mydir + 'figs/pFix.png', \
+        bbox_inches = "tight", pad_inches = 0.4, dpi = 600)
+    plt.close()
+
 #def Fig4():
 
 #TfixFigActDorm()
 #sweepDormFig()
 #TfixFig()
+pFix()

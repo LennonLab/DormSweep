@@ -38,7 +38,9 @@ def sweepSim(N, s, reps = 1000):
     df.to_csv(mydir + 'data/sweep_' + str(s) + '.txt', header=False, index = False)
 
 
-def sweepSimDorm(N, M, c, s, reps = 1000):
+def sweepSimDorm(N, M, c, s, reps = 1000, Tfix = True):
+    fixed = 0
+    lost = 0
     count = 0
     N_freqs_list = []
     M_freqs_list = []
@@ -96,20 +98,24 @@ def sweepSimDorm(N, M, c, s, reps = 1000):
             # if the advantagous allele is lost from the population,
             # restart the simulation
             if (NB + MB) == 0:
+                lost += 1
+                if (Tfix ==  False):
+                    count += 1
                 break
         if (NB + MB)  != (N + M):
             continue
         else:
-            print N, M, c, s, count
-            N_freqs_list.append(N_freqs)
-            M_freqs_list.append(M_freqs)
-            count +=1
+            if Tfix == True:
+                print N, M, c, s, count
+                N_freqs_list.append(N_freqs)
+                M_freqs_list.append(M_freqs)
+            fixed += 1
+            count += 1
     N_df = pd.DataFrame(N_freqs_list)
     M_df = pd.DataFrame(M_freqs_list)
-    N_df.to_csv(mydir + 'data/N_sweep_N_' + str(N) + '_M_' + str(M) + '_c_' + \
-        str(c) + '_s_' + str(s) + '_r_' + str(reps) + '.txt', header=False, index = False)
-    M_df.to_csv(mydir + 'data/M_sweep_N_' + str(N) + '_M_' + str(M) + '_c_' + \
-        str(c) + '_s_' + str(s) + '_r_' + str(reps) + '.txt', header=False, index = False)
+    pfix = fixed  / (fixed + lost)
+    return (N_df, M_df, pfix)
+
 
 def multipleS(N, reps = 100):
     Ss = [0.001, 0.01, 0.1]
@@ -120,9 +126,29 @@ def multipleSDorm(N, M, s = 0.1, reps = 100):
     #Ss = [0.001, 0.01, 0.1]
     #Cs = [1, 10, 100]
     #Cs = np.logspace(0, 4, num = 100, base=10.0)
-    Cs = [10000]
+    #Cs = [10000]
+    Cs = [1, 10, 100]
     for c in Cs:
         print c
-        sweepSimDorm(N = N, M = M, c = c,  s = s, reps = reps)
+        N_M_tuple = sweepSimDorm(N = N, M = M, c = c,  s = s, reps = reps)
+        N_M_tuple[0].to_csv(mydir + 'data/N_sweep_N_' + str(N) + '_M_' + str(M) + '_c_' + \
+            str(c) + '_s_' + str(s) + '_r_' + str(reps) + '.txt', header=False, index = False)
+        N_M_tuple[0].to_csv(mydir + 'data/M_sweep_N_' + str(N) + '_M_' + str(M) + '_c_' + \
+            str(c) + '_s_' + str(s) + '_r_' + str(reps) + '.txt', header=False, index = False)
+
+def probFix(N, M, s = 0.1, reps = 10):
+    OUT_name = mydir + 'data/pFix/' + 'N_sweep_N_' + str(N) + '_M_' + str(M) + '_s_' + \
+        str(s) + '_r_' + str(reps) + '.txt'
+    OUT = open(OUT_name, 'w')
+    print>> OUT, 'N', 'M', 's', 'c', 'reps', 'pFix'
+    #Cs = [10000]
+    Cs = np.logspace(0, 4, num = 100, base=10.0)[:-1]
+    for c in Cs:
+        print c
+        pfix = sweepSimDorm(N = N, M = M, c = c,  s = s, reps = reps)
+        print>> OUT, N, M, s, c, reps, pfix[2]
+    OUT.close()
+
 
 #multipleSDorm(N = 1000, M = 10000)
+#probFix(N = 1000, M = 10000)
